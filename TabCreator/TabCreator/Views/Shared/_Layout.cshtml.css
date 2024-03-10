@@ -7,8 +7,11 @@ a.navbar-brand {
   word-break: break-all;
 }
 
-a {
-  color: #0077cc;
+
+
+.nav-item:hover,
+.nav-item:focus {
+    background: #cfcfcf;
 }
 
 .btn-primary {

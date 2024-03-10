@@ -2,4 +2,12 @@
 	ViewData["Title"] = "Sheet Music Editor";
 }
 
-<p>This page will be used to edit sheet music.</p>
+@section SheetMusicSidebar {
+	@await Html.PartialAsync("_SheetMusicSidebar")
+}
+
+<div class="text-center">
+
+	@await Html.PartialAsync("_EmbeddedSheet")
+
+</div>
