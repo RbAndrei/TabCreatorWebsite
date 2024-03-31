@@ -1,17 +1,4 @@
-﻿body {
-    font-family: sans-serif;
-    background: #cfcfcf;
-}
-
-p {
-    font-family: sans-serif;
-    font-size: 1.1em;
-    font-weight: 300;
-    line-height: 1.7em;
-    color: #999;
-}
-
-a,
+﻿a,
 a:hover,
 a:focus {
     color: inherit;
@@ -26,9 +13,10 @@ a:focus {
     bottom: 60px;
     min-width: 250px;
     max-width: 250px;
-    background: white;
+    background: #0000000e;
     color: black;
     transition: all 0.3s;
+    border-right: solid 1px black;
 }
 
     #sidebar ul.components {
@@ -49,4 +37,9 @@ ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: #fff;
+}
+
+.notes {
+    height: 21px;
+    width: auto;
 }

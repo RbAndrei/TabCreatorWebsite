@@ -1,103 +1,138 @@
-﻿<!DOCTYPE html>
+﻿@using System.IO
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment WebHostEnvironment
+
+@functions
+{
+	public void DisplaySidebarImages(string imgPath)
+	{
+
+		string strDirectory = System.IO.Path.Combine(WebHostEnvironment.WebRootPath, imgPath);
+		string[] strFiles = Directory.GetFiles(strDirectory);
+
+		int i = 0;
+		foreach (var strFile in strFiles)
+		{
+			if (i == 0)
+			{
+				@:<li>
+			}
+
+			<a href="#" style="display: inline-block;">
+				@{
+					string strFileName = System.IO.Path.GetFileName(strFile);
+				}
+				<img id="myImg" src="@Url.Content("~/" + imgPath + strFileName)" class="notes" />
+			</a>
+
+			i++;
+
+			if(i == 3)
+			{
+				i = 0;
+				@:</li>
+			}
+		}
+
+		if(i != 0)
+		{
+			@:</li>
+		}
+	}
+}
+
+<!DOCTYPE html>
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <link rel="stylesheet" href="_SheetMusicSidebar.cshtml.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+	<link rel="stylesheet" href="~/css/sidebar.css">
 
 </head>
 
 <body>
-    <div class="wrapper">
-        <nav id="sidebar">
+	<div class="wrapper">
+		<nav id="sidebar">
 
-            <ul class="list-unstyled components">
-                <li class="active">
-                    <a href="#notesSubmenu" data-toggle="collapse" aria-expanded="false">Sheet Notes</a>
-                    <ul class="collapse list-unstyled" id="notesSubmenu">
-                        <li>
-                            <a href="#" style="display: inline-block;" ><img src="~/images/notes/whole.png" width="21px" height="auto" /></a>
-                            <a href="#" style="display: inline-block;"><img src="~/images/notes/half.png" width="21px" height="auto" /></a>
-                            <a href="#" style="display: inline-block;"><img src="~/images/notes/halfdotted.png" width="21px" height="auto" /></a>
-                        </li>
-                        <li>
-                            <a href="#" style="display: inline-block;"><img src="~/images/notes/quarter.png" width="21px" height="auto" /></a>
-                            <a href="#" style="display: inline-block;"><img src="~/images/notes/eight.png" width="21px" height="auto" /></a>
-                            <a href="#" style="display: inline-block;"><img src="~/images/notes/sixteenth.png" width="21px" height="auto" /></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="active">
-                    <a href="#restsSubmenu" data-toggle="collapse" aria-expanded="false">Rests</a>
-                    <ul class="collapse list-unstyled" id="restsSubmenu">
-                        <li>
-                            <a href="#" style="display: inline-block;"><img src="~/images/rests/whole.png" width="21px" height="auto" /></a>
-                            <a href="#" style="display: inline-block;"><img src="~/images/rests/quarter.png" width="21px" height="auto" /></a>
-                            <a href="#" style="display: inline-block;"><img src="~/images/rests/eight.png" width="21px" height="auto" /></a>
-                        </li>
-                        <li>
-                            <a href="#" style="display: inline-block;"><img src="~/images/rests/sixteenth.png" width="21px" height="auto" /></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="active">
-                    <a href="#cleffsSubmenu" data-toggle="collapse" aria-expanded="false">Cleffs</a>
-                    <ul class="collapse list-unstyled" id="cleffsSubmenu">
-                        <li>
-                            <a href="#" style="display: inline-block;"><img src="~/images/cleffs/treble.png" width="21px" height="auto" /></a>
-                            <a href="#" style="display: inline-block;"><img src="~/images/cleffs/bass.png" width="21px" height="auto" /></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="active">
-                    <a href="#signaturesSubmenu" data-toggle="collapse" aria-expanded="false">Time signatures</a>
-                    <ul class="collapse list-unstyled" id="signaturesSubmenu">
-                        <li>
-                            <a href="#" style="display: inline-block;"><img src="~/images/signature/2-4.png" width="21px" height="auto" /></a>
-                            <a href="#" style="display: inline-block;"><img src="~/images/signature/3-4.png" width="21px" height="auto" /></a>
-                            <a href="#" style="display: inline-block;"><img src="~/images/signature/6-8.png" width="21px" height="auto" /></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="active">
-                    <a href="#accidentalsSubmenu" data-toggle="collapse" aria-expanded="false">Accidentals</a>
-                    <ul class="collapse list-unstyled" id="accidentalsSubmenu">
-                        <li>
-                            <a href="#" style="display: inline-block;"><img src="~/images/accidentals/sharp.png" width="21px" height="auto" /></a>
-                            <a href="#" style="display: inline-block;"><img src="~/images/accidentals/flat.png" width="21px" height="auto" /></a>
-                            <a href="#" style="display: inline-block;"><img src="~/images/accidentals/natural.png" width="21px" height="auto" /></a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">Properties</a>
-                </li>
-                <li>
+			<ul class="list-unstyled components">
+				<li class="active">
+					<a href="#notesSubmenu" data-toggle="collapse" aria-expanded="false">Sheet Notes</a>
+					<ul class="collapse list-unstyled" id="notesSubmenu">
 
-                    <a href="#">
-                        <img src="~/images/save_icon.png" id="saveicon" width="21px" height="auto" />
-                        Download
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+						@{
+							DisplaySidebarImages("images/notes/");
+						}
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+					</ul>
+				</li>
+				<li class="active">
+					<a href="#restsSubmenu" data-toggle="collapse" aria-expanded="false">Rests</a>
+					<ul class="collapse list-unstyled" id="restsSubmenu">
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-            });
-        });
-    </script>
+						@{
+							DisplaySidebarImages("images/rests/");
+						}
+
+					</ul>
+				</li>
+				<li class="active">
+					<a href="#cleffsSubmenu" data-toggle="collapse" aria-expanded="false">Cleffs</a>
+					<ul class="collapse list-unstyled" id="cleffsSubmenu">
+
+						@{
+							DisplaySidebarImages("images/cleffs/");
+						}
+
+					</ul>
+				</li>
+				<li class="active">
+					<a href="#signaturesSubmenu" data-toggle="collapse" aria-expanded="false">Time signatures</a>
+					<ul class="collapse list-unstyled" id="signaturesSubmenu">
+
+						@{
+							DisplaySidebarImages("images/signature/");
+						}
+
+					</ul>
+				</li>
+				<li class="active">
+					<a href="#accidentalsSubmenu" data-toggle="collapse" aria-expanded="false">Accidentals</a>
+					<ul class="collapse list-unstyled" id="accidentalsSubmenu">
+
+						@{
+							DisplaySidebarImages("images/accidentals/");
+						}
+
+					</ul>
+				</li>
+				<li>
+					<a href="#">Properties</a>
+				</li>
+				<li>
+
+					<a href="#">
+						<img src="~/images/save_icon.png" id="saveicon" width="21px" height="auto" />
+						Download
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#sidebarCollapse').on('click', function () {
+				$('#sidebar').toggleClass('active');
+			});
+		});
+	</script>
 
 </body>
 
