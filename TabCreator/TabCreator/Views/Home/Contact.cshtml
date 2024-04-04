@@ -1,6 +1,22 @@
 ﻿@{
-    ViewData["Title"] = "Contact";
+	ViewData["Title"] = "Contact";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>This page will be used to send bug reports and feature requests.</p>
+<body>
+	<p>
+		Use this page to inform us of bugs you've found while using the site or tell us about features you'd like to see.
+	</p>
+	<div>
+		<form id="contactform">
+			<input type="text" id="email" name="email" placeholder="E-Mail" />
+			<select id="topic" name="topic">
+				<option value="bug">Bug Report</option>
+				<option value="request">Feature Request</option>
+			</select>
+			<input type="text" id="subject" name="subject" placeholder="Subject" />
+			<input type="text" id="content" name="content" placeholder="E-mail content" />
+			<input type="submit" value="Submit"/>
+		</form>
+	</div>
+</body>
