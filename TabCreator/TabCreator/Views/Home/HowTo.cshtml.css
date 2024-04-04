@@ -1,0 +1,24 @@
+﻿html, body {
+    margin: 0;
+    padding: 0;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+body {
+    display: flex;
+}
+
+.col {
+    overflow-y: auto;
+    max-height: 84vh;
+    width: 100%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+}
+
+.col::-webkit-scrollbar {
+    display: none;
+}
+
