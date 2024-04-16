@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<!DOCTYPE html>
+<head>
+    <title>Fretboard</title>
+    <link rel="stylesheet" href="~/css/fretboard.css" />
+</head>
+<body>
+    <div class="settings">
+        <div class="accidental-selector">
+            <input type="radio" class="acc-select" id="flats" name="accidentals" value="flats" checked>
+            <label for="flats">♭</label>
+            <input type="radio" class="acc-select" id="sharps" name="accidentals" value="sharps">
+            <label for="flats">♯</label>
+        </div>
+    </div>
+
+    <div class="fretboard">
+    </div>
+    <script type="text/javascript" src="~/js/fretboard.js"></script>
+</body>
+</html>
