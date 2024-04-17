@@ -87,14 +87,6 @@ label {
     color: #fff;
 }
 
-.note-btn:hover {
-    background: #4d7eda;
-}
-
-.note-selected:hover {
-    background: #4d7eda;
-}
-
 .single-fretmark:after, .double-fretmark:before, .double-fretmark:after {
     content: "";
     position: absolute;

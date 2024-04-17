@@ -8,6 +8,12 @@
     const notesSharp = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
     const openNotesOctave = [4, 3, 3, 3, 2, 2];
     const guitarStandardTuning = [4, 11, 7, 2, 9, 4];
+    const noteColors = {
+        'default': '#2f4d85',
+        'selected': 'black',
+        'defaultmouse': '#4370c4',
+        'selectedmouse': '#082254'
+    }
 
     let allNotes;
     let accidentals = 'sharps';
@@ -41,9 +47,15 @@
                     noteBtn.classList.add('note-btn');
                     noteBtn.classList.add('string-' + (i + 1));
                     noteBtn.classList.add('fret-' + fret);
-                    noteBtn.addEventListener('click', function (event) {
-                        handlers.setNoteSelected(event);
-                    });
+
+                    if (noteBtn.classList.contains('fret-0')) {
+                        noteBtn.style.background = noteColors['selected'];
+                        noteBtn.classList.add('note-selected');
+                    }
+
+                    noteBtn.addEventListener('click', function (event) { handlers.setNoteSelected(event); });
+                    noteBtn.addEventListener('mouseover', function (event) { handlers.setNoteMouseOver(event); })
+                    noteBtn.addEventListener('mouseout', function (event) { handlers.setNoteMouseOut(event); })
 
                     noteFret.appendChild(noteBtn);
                     string.appendChild(noteFret);
@@ -106,6 +118,24 @@
     const handlers = {
         setupEventListeners() {
 
+        },
+        setNoteMouseOver(event) {
+            let currentElement = event.target;
+            if (currentElement.classList.contains('note-selected')) {
+                currentElement.style.background = noteColors['selectedmouse'];
+            }
+            else {
+                currentElement.style.background = noteColors['defaultmouse'];
+            }
+        },
+        setNoteMouseOut(event) {
+            let currentElement = event.target;
+            if (currentElement.classList.contains('note-selected')) {
+                currentElement.style.background = noteColors['selected'];
+            }
+            else {
+                currentElement.style.background = noteColors['default'];
+            }
         },
         setNoteSelected(event) {
             let currentElement = event.target;
