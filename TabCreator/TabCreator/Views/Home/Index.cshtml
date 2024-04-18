@@ -2,6 +2,10 @@
     ViewData["Title"] = "Home Page";
 }
 
+<head>
+    <link rel="stylesheet" href="~/css/tab.css" />
+</head>
+
 @section TabSidebar {
     @await Html.PartialAsync("_TabSidebar")
 }
@@ -9,11 +13,9 @@
 <div class="text-center container">
 
     <div class="scrolling-container score-element">
-        <img src="~/images/sheet/lines.png" />
-        <img src="~/images/sheet/lines.png" />
-        <img src="~/images/sheet/lines.png" />
-        <img src="~/images/sheet/lines.png" />
     </div>
+
+    <script type="text/javascript" src="~/js/tab.js"></script>
 
 </div>
 

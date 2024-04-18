@@ -71,21 +71,17 @@ input[type=submit] {
     overflow-y: auto;
     max-height: 84vh;
     width: 100%;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
     scroll-behavior: smooth;
 }
-
-    .scrolling-container::-webkit-scrollbar {
-        display: none;
-    }
 
 .score-element {
     border-style: solid;
     border-width: 2px;
     border-radius: 20px;
+    border-color: #2f4d85;
     height: 82vh;
+    display: flex;
+    flex-direction: column;
 }
-
 
 /* ---------------- Scroling Container  END  ---------------- */

@@ -33,13 +33,24 @@ a:focus {
             background: #cfcfcf;
         }
 
-ul ul a {
-    font-size: 0.9em !important;
-    padding-left: 30px !important;
-    background: #fff;
-}
-
 .notes {
     height: 21px;
     width: auto;
+}
+
+#fret-number {
+    width: 50%;
+    margin-left: 2%;
+    padding-left: 10px;
+    padding-right: 4px;
+    background: #fff;
+    cursor: pointer;
+}
+
+#label-fret-number {
+    cursor: pointer;
+}
+
+.stop-scrolling {
+    overflow: hidden !important;
 }
