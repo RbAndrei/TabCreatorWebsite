@@ -1,9 +1,12 @@
 ﻿:root {
     --fretboard-height: 300;
+    --chord-section-height: 250;
+    --note-chord-width: 90;
     --number-of-strings: 6;
     --string-height: 2;
     --half-string-height: calc(var(--string-height) / 2);
-    --string-top-position: calc(var(--fretboard-height) / var(--number-of-strings) / 2 - var(--half-string-height));
+    --string-top-position-fretboard: calc(var(--fretboard-height) / var(--number-of-strings) / 2 - var(--half-string-height));
+    --string-top-position-chord: calc(var(--chord-section-height) / var(--number-of-strings) / 2 - var(--half-string-height) - 3);
     --double-fretmark-position-1: calc(var(--fretboard-height) * 0.15);
     --double-fretmark-position-2: calc(var(--fretboard-height) * 0.85);
 }
@@ -13,9 +16,7 @@
     padding: 0;
 }
 
-label {
-    margin: 0 10px;
-}
+/* ------------------- Fretboard BEGIN ------------------- */
 
 .fretboard {
     display: flex;
@@ -25,17 +26,6 @@ label {
     width: 95%;
     height: calc(var(--fretboard-height) * 1px);
     margin: 0 auto;
-}
-
-.chord {
-    display: flex;
-    justify-content: space-around;
-    background: #223251;
-    color: #fff;
-    width: 30%;
-    height: 200px;
-    margin: 0 auto;
-    margin-top: 100px;
 }
 
 .string {
@@ -51,8 +41,7 @@ label {
         height: calc(var(--string-height) * 1px);
         background: #4a6082;
         position: absolute;
-        top: 22px;
-        top: calc(var(--string-top-position) * 1px);
+        top: calc(var(--string-top-position-fretboard) * 1px);
     }
 
 .note-fret {
@@ -110,3 +99,90 @@ label {
     top: calc(var(--double-fretmark-position-2) * 1px);
     transform: translate(-140%, -50%);
 }
+
+/* ------------------- Fretboard  END  ------------------- */
+
+/* ------------------- Chord BEGIN ------------------- */
+
+.chord {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background: white;
+    color: #fff;
+    width: 30%;
+    height: calc(var(--chord-section-height) * 1px);
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+.string-chord {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: relative;
+}
+
+    .string-chord:before {
+        content: '';
+        width: 100%;
+        height: calc(var(--string-height) * 1px);
+        background: #4a6082;
+        position: absolute;
+        z-index:1;
+        top: calc(var(--string-top-position-chord) * 1px);
+    }
+
+.note-fret-chord {
+    display: flex;
+    flex: 1;
+    border-right: 7px solid;
+    border-color: #4a6082;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.note-chord {
+    width: 33px;
+    height: 33px;
+    border-radius: 50%;
+    border-width: 0px;
+    line-height: 33px;
+    text-align: center;
+    background: #2f4d85;
+    z-index: 2;
+    color: #fff;
+    opacity: 0;
+}
+
+.fret-chord-0 {
+    background: white;
+    border: 5px solid #2f4d85;
+    width: 28px;
+    height: 28px;
+}
+
+.fret-muted {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 28px; 
+    color: #2f4d85;
+    font-size: 30px;
+    font-weight: 600;
+    border: 0px !important;
+}
+
+.start-fret-chord {
+    width: 50%;
+    height: 100%;
+    background: white;
+    display: flex;
+    position: relative;
+    color: #2f4d85;
+    font-size: 22px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+/* ------------------- Chord  END  ------------------- */

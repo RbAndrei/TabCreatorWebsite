@@ -8,6 +8,9 @@
     const notesSharp = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
     const openNotesOctave = [4, 3, 3, 3, 2, 2];
     const guitarStandardTuning = [4, 11, 7, 2, 9, 4];
+    const numberOfStrings = 6;
+    const numberOfFrets = 25;
+    const chordNumberOfFrets = 5;
     const noteColors = {
         'default': '#2f4d85',
         'selected': 'black',
@@ -18,8 +21,7 @@
     let allNotes;
     let accidentals = 'sharps';
     let activeNotes = ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'];
-    let numberOfFrets = 25;
-    let numberOfStrings = 6;
+
     let currentOctave = 2;
 
     const app = {
@@ -87,11 +89,33 @@
             chordSection.innerHTML = '';
             let noteNames = activeNotes
 
+            let startFret = tools.createElement('p');
+            startFret.classList.add('start-fret-chord');
+            startFret.innerHTML = '1';
+            chordSection.appendChild(startFret);
+
             for (let i = 0; i < numberOfStrings; i++) {
-                let noteNameElement = tools.createElement('p', noteNames[i]);
-                noteNameElement.classList.add("string-" + (i + 1));
-                noteNameElement.classList.add("pressed-note");
-                chordSection.appendChild(noteNameElement);
+
+                let string = tools.createElement('div');
+                string.classList.add('string-chord');
+                chordSection.appendChild(string);
+
+                for (let fret = 0; fret <= chordNumberOfFrets; fret++) {
+                    let noteFret = tools.createElement('div');
+                    noteFret.classList.add('note-fret-chord');
+                    string.appendChild(noteFret);
+
+                    let noteChord = tools.createElement('div');
+                    noteChord.classList.add('note-chord');
+                    noteChord.classList.add('string-chord-' + i);
+                    noteChord.classList.add('fret-chord-' + fret);
+
+                    if (fret == 0) {
+                        noteChord.style.opacity = 1;
+                    }
+
+                    noteFret.appendChild(noteChord);
+                }
             }
         },
         generateNoteNames(noteIndex, accidentals, octave) {
@@ -107,10 +131,85 @@
             return noteName;
         },
         updateChord() {
-            const pressedNotes = document.querySelectorAll('.pressed-note');
+            let selectedNotes = document.querySelectorAll('.note-selected');
+            let fretNumbers = [0, 0, 0, 0, 0, 0];
+            let minFret = 30;
+            let maxFret = 0;
+            let iterator = 1;
 
-            for (let i = 0; i < numberOfStrings; i++) {
-                pressedNotes[i].innerHTML = activeNotes[i];
+            let allNoteChord = document.querySelectorAll('.note-chord');
+            for (let note of allNoteChord) {
+                note.style.opacity = 0;
+                note.classList.remove('fret-muted');
+                note.innerHTML = '';
+            }
+
+            //Update 'activeNotes' array with fretboard values
+            //Find left-most and right-most fret of chord
+
+            for (let element of selectedNotes) {
+                let selectedString = element.classList.value.split(" ")[1].split("-")[1];
+                selectedString = parseInt(selectedString);
+                let selectedFret = element.classList.value.split(" ")[2].split("-")[1];
+                selectedFret = parseInt(selectedFret);
+
+                while (iterator < selectedString) {
+                    fretNumbers[iterator - 1] = -1;
+                    iterator += 1;
+                }
+                fretNumbers[iterator-1] = selectedFret;
+                iterator += 1;
+
+                if (selectedFret != 0) {
+                    if (selectedFret < minFret) {
+                        minFret = selectedFret;
+                    }
+                    if (selectedFret > maxFret) {
+                        maxFret = selectedFret;
+                    }
+                }
+            }
+
+            while (iterator < 7) {
+                fretNumbers[iterator - 1] = -1;
+                iterator++;
+            }
+
+            if (minFret == 30 || minFret == 0) {
+                minFret = 1;
+            }
+
+            if (maxFret - minFret >= 5) {
+                document.querySelector('.start-fret-chord').innerHTML = 'Frets too far apart';
+            }
+            else if (maxFret - minFret < 5) {
+                document.querySelector('.start-fret-chord').innerHTML = minFret;
+
+                for (let string = 0; string < numberOfStrings; string++) {
+                    let fret;
+                    if (fretNumbers[string] > 0) {
+                        fret = ((fretNumbers[string] - minFret + 1) % 6);
+                    }
+                    else {
+                        fret = 0;
+                    }
+
+                    let stringClass = '.string-chord-' + string;
+                    let fretClass = '.fret-chord-' + fret;
+                    if (fretNumbers[string] == -1) {
+                        fretClass = '.fret-chord-0';
+                    }
+
+                    let classToBeSelected = stringClass + fretClass;
+
+                    let currentNote = document.querySelector(classToBeSelected);
+
+                    currentNote.style.opacity = 1;
+                    if (fretNumbers[string] == -1) {
+                        currentNote.classList.add('fret-muted');
+                        currentNote.innerHTML = 'X';
+                    }
+                }
             }
         }
     }
@@ -154,9 +253,6 @@
                 currentElement.style.background = 'black';
 
                 //Deselect all other selected notes on same string
-
-                /*let currentString = currentElement.classList.value.split(" ")[1];
-                let currentFret = currentElement.classList.value.split(" ")[2];*/
 
                 for (const element of allNotes) {
                     if (element.classList.contains(currentString) && !element.classList.contains(currentFret)) {
