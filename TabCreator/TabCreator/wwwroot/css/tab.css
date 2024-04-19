@@ -56,8 +56,14 @@
     width: 100%;
     border-radius: 10%;
     margin: 0 auto;
-    cursor: pointer;
     z-index: 3;
+    color: #2f4d85;
+    cursor: pointer;
+}
+
+.container-hover {
+    background: #e0e9f7 !important;
+    color: #4370c4 !important;
 }
 
 .note-text {
@@ -68,4 +74,8 @@
     border-radius: 20%;
     background: white;
     z-index: 2;
+}
+
+.element-selected {
+    background: #cfcfcf;
 }
