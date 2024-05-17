@@ -24,4 +24,8 @@
     <None Include="wwwroot\images\save_icon.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
