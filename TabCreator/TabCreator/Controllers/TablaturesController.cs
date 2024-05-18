@@ -45,7 +45,7 @@ namespace TabCreator.Controllers
         // GET: Tablatures/Create
         public IActionResult Create()
         {
-			ViewBag.Users = new SelectList(_context.Users, "UserId", "UserName");
+			ViewBag.Users = new SelectList(_context.Users, "Id", "UserName");
 			return View();
         }
 
@@ -80,7 +80,7 @@ namespace TabCreator.Controllers
                 return NotFound();
             }
 
-            ViewBag.Users = new SelectList(_context.Users, "UserId", "UserName");
+            ViewBag.Users = new SelectList(_context.Users, "Id", "UserName");
             return View(tablature);
         }
 

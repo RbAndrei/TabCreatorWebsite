@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TabCreator.Models
@@ -8,10 +9,10 @@ namespace TabCreator.Models
         public int ChordsId { get; set; }
 
         [Required]
-        public int UserId { get; set; }
+        public string? UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User? User { get; set; }
+        public virtual IdentityUser? User { get; set; }
 
         public string? UserChord { get; set; }
     }
