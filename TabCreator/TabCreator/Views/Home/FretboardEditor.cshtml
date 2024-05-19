@@ -31,12 +31,12 @@
 			{
 				<li>
 					<a href="#" id="save-btn">
-						Save Tab
+						Save Chord
 					</a>
 				</li>
 				<li>
 					<a href="#" id="open-btn">
-						Open Tab
+						Open Chord
 					</a>
 				</li>
 			}
@@ -44,12 +44,12 @@
 			{
 				<li>
 					<a hidden href="#" id="save-btn">
-						Save Tab
+						Save Chord
 					</a>
 				</li>
 				<li>
 					<a hidden href="#" id="open-btn">
-						Open Tab
+						Open Chord
 					</a>
 				</li>
 			}
@@ -59,7 +59,7 @@
 			{
 				<li>
 					<a href="#" id="delete-btn">
-						Delete Tab
+						Delete Chord
 					</a>
 				</li>
 			}
@@ -67,7 +67,7 @@
 			{
 				<li>
 					<a hidden href="#" id="delete-btn">
-						Delete Tab
+						Delete Chord
 					</a>
 				</li>
 			}
@@ -83,7 +83,7 @@
 					<label asp-for="ChordName" class="control-label"></label>
 					<input asp-for="ChordName" class="form-control" />
 					<span asp-validation-for="ChordName" class="text-danger"></span>
-				</div
+				</div>
 				<div hidden class="form-group">
 					<input hidden asp-for="UserChord" id="user-chord-input" class="form-control" />
 				</div>
@@ -124,8 +124,8 @@
 			<span class="close">&times;</span>
 			<form asp-action="DeleteChord" method="post">
 				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-				<div class="form-group">
-					<input asp-for="ChordsId" value="@ViewBag.ChordId" class="form-control" id="chord-id-open" />
+				<div hidden class="form-group">
+					<input hidden asp-for="ChordsId" value="@ViewBag.ChordId" class="form-control" id="chord-id-open" />
 				</div>
 				<div>
 					<p>Are you sure you want to delete this chord?</p>

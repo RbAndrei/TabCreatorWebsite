@@ -28,7 +28,7 @@ body {
 
 /* ---------------- Forms BEGIN ---------------- */
 
-input[type=text], input[type=email], textarea, select {
+input[type=text], input[type=email], input[type=password], textarea, select {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;

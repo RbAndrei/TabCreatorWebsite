@@ -13,15 +13,15 @@ var spans = document.getElementsByClassName("close");
 
 // When the user clicks the button, open the modal
 btnSave.onclick = function () {
-	modalSave.style.display = "block";
+	modalSave.style.display = "flex";
 }
 
 btnOpen.onclick = function () {
-	modalOpen.style.display = "block";
+	modalOpen.style.display = "flex";
 }
 
 btnDelete.onclick = function () {
-	modalDelete.style.display = "block";
+	modalDelete.style.display = "flex";
 }
 
 // When the user clicks on <span> (x), close the modal

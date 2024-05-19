@@ -3,7 +3,7 @@
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 5; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+    margin: auto;
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -15,19 +15,37 @@
 
 /* Modal Content */
 .modal-content {
-    background-color: #fefefe;
+    background-color: #223251;
     margin: auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+    padding-top: 5px;
+    width: 30%;
+}
+
+.modal-content form div label {
+    color: white;
+}
+
+.modal-content form div input[type=submit] {
+    background-color: #2f4d85;
+}
+
+    .modal-content form div input[type=submit]:hover {
+        background-color: #4370c4;
+    }
+
+.modal-content form div p {
+    color: white;
 }
 
 /* The Close Button */
 .close {
     color: #aaaaaa;
-    float: right;
+    right: 0;
+    width: 20px;
     font-size: 28px;
     font-weight: bold;
+    margin-left: auto; 
 }
 
     .close:hover,
