@@ -1,13 +1,17 @@
 ﻿@{
 	ViewData["Title"] = "Contact";
 }
-<h1>@ViewData["Title"]</h1>
 
-<div class="container">
+<head>
+	<link rel="stylesheet" href="~/css/login-register.css" />
+</head>
+
+<div id="contact-main" class="container">
+	<h1>@ViewData["Title"]</h1>
 	<p>
 		Use this page to inform us of bugs you've found while using the site or tell us about features you'd like to see.
 	</p>
-	<div class="form-container">
+	<div>
 		<form id="contactform">
 			<input type="email" id="email" name="email" placeholder="E-Mail" />
 			<select id="topic" name="topic">
@@ -16,7 +20,7 @@
 			</select>
 			<input type="text" id="subject" name="subject" placeholder="Subject" />
 			<textarea class="big-text-box" id="content" name="content" placeholder="E-mail content"></textarea>
-			<input type="submit" value="Submit"/>
+			<input type="submit" value="Submit" />
 		</form>
 	</div>
 </div>

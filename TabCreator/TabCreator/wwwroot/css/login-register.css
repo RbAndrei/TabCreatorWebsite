@@ -1,6 +1,7 @@
 ﻿#login-main,
 #register-main,
-#manage-main {
+#manage-main,
+#contact-main {
     display: flex;
     flex-direction: column;
     width: 40%;
