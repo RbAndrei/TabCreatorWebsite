@@ -27,7 +27,7 @@
 
 <div class="text-center container">
 
-	<div class="scrolling-container score-element">
+	<div class="scrolling-container score-element" id="tab-container">
 	</div>
 
 </div>
@@ -62,13 +62,13 @@
 			</div>
 			<div class="form-group">
 				<label asp-for="TablatureName" class="control-label"></label>
-				<select asp-for="TablatureName" class="form-control" id="tab-name-open" >
-				@foreach (var tab in tablatures)
-				{
-					tabId = tab.TablatureId;
-					<option value="@tab.TablatureId" data-name="@tab.TablatureName">@tab.TablatureName</option>
-				}
-				<span asp-validation-for="TablatureName" class="text-danger"></span>
+				<select asp-for="TablatureName" class="form-control" id="tab-name-open">
+					@foreach (var tab in tablatures)
+					{
+						tabId = tab.TablatureId;
+						<option value="@tab.TablatureId" data-name="@tab.TablatureName">@tab.TablatureName</option>
+					}
+					<span asp-validation-for="TablatureName" class="text-danger"></span>
 				</select>
 			</div>
 			<div class="form-group">
@@ -96,8 +96,11 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="~/js/modal.js" ></script>
-<script type="text/javascript" src="~/js/tab.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script type="text/javascript" src="~/js/modal.js"></script>
+<script type="text/javascript" src="~/js/tab.js"></script>
 <script type="text/javascript">
 	document.addEventListener("DOMContentLoaded", function () {
 		const tablatureNameSelect = document.getElementById("tab-name-open");
@@ -107,8 +110,54 @@
 			const selectedOption = tablatureNameSelect.options[tablatureNameSelect.selectedIndex];
 			tablatureIdInput.value = selectedOption.value;
 		});
-		
+
 		tablatureNameSelect.dispatchEvent(new Event('change'));
 	});
 </script>
 
+<script>
+	function convertHTMLtoPDF() {
+		const { jsPDF } = window.jspdf;
+
+		let pdfjs = document.querySelector('#tab-container');
+
+		let clone = pdfjs.cloneNode(true);
+		clone.style.overflow = 'visible';
+		clone.style.hidden = true;
+		clone.style.border = 'none';
+
+		document.body.appendChild(clone);
+
+		html2canvas(clone, {
+			windowWidth: clone.scrollWidth,
+			windowHeight: clone.scrollHeight
+		}).then(canvas => {
+			let pdf = new jsPDF('l', 'mm', 'a4');
+			let pageWidth = pdf.internal.pageSize.getWidth();
+			let pageHeight = pdf.internal.pageSize.getHeight();
+
+			let imgData = canvas.toDataURL('image/jpeg', 1.0);
+
+			let imgWidth = canvas.width;
+			let imgHeight = canvas.height;
+			let ratio = imgWidth / pageWidth;
+
+			let totalHeight = imgHeight / ratio;
+			let remainingHeight = totalHeight;
+			let yOffset = 0;
+
+			while (remainingHeight > 0) {
+				pdf.addImage(imgData, 'JPEG', 0, -yOffset, pageWidth, totalHeight);
+				yOffset += pageHeight;
+				remainingHeight -= pageHeight;
+				if (remainingHeight > 0) {
+					pdf.addPage();
+				}
+			}
+
+			pdf.save("@ViewBag.TablatureName" + ".pdf");
+
+			document.body.removeChild(clone);
+		});
+	}
+</script>

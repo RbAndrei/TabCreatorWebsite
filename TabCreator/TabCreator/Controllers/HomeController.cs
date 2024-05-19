@@ -45,6 +45,7 @@ namespace TabCreator.Controllers
                 if (currentTablature != null)
                 {
                     ViewBag.TablatureContent = currentTablature.UserTab;
+					ViewBag.TablatureName = currentTablature.TablatureName;
                     ViewBag.TablatureId = tablatureId;
                 }
             }
