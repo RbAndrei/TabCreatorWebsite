@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,8 @@ using TabCreator.Models;
 
 namespace TabCreator.Controllers
 {
-    public class TablaturesController : Controller
+	[Authorize(Roles = "Admin")]
+	public class TablaturesController : Controller
     {
         private readonly TabCreatorContext _context;
 
