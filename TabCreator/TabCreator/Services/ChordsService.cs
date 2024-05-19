@@ -36,6 +36,10 @@ namespace TabCreator.Services
 			return _repositoryWrapper.ChordsRepository.FindByCondition(c => c.ChordsId == id).FirstOrDefault()!;
 		}
 
+		public List<Chords> GetChordsByUserId(string userId)
+		{
+			return _repositoryWrapper.ChordsRepository.FindByCondition(c => c.UserId == userId).ToList();
+		}
 		public List<Chords> GetChords()
 		{
 			return _repositoryWrapper.ChordsRepository.FindAll().ToList();

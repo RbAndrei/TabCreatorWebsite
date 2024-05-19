@@ -22,6 +22,13 @@
     let accidentals = 'sharps';
     let activeNotes = ['E4', 'B3', 'G3', 'D3', 'A2', 'E2'];
 
+    let chordCompositionString = "s1f00s2f00s3f00s4f00s5f00s6f00"; //all open notes selected;
+    /* 
+    a note in chordCompositionString has the format: s<string number>f<fret number>
+    example: note 23 on string 3 is shown as: s3f23
+    this is to avoid accidentally replacing other characters
+    */
+
     let currentOctave = 2;
 
     const app = {
@@ -34,6 +41,7 @@
             fretboard.innerHTML = '';
             // Add strings to fretboard
             for (let i = 0; i < numberOfStrings; i++) {
+
                 currentOctave = openNotesOctave[i];
 
                 let string = tools.createElement('div');
@@ -42,6 +50,7 @@
 
                 // Create frets
                 for (let fret = 0; fret <= numberOfFrets; fret++) {
+
                     let noteFret = tools.createElement('div');
                     noteFret.classList.add('note-fret');
 
@@ -49,11 +58,7 @@
                     noteBtn.classList.add('note-btn');
                     noteBtn.classList.add('string-' + (i + 1));
                     noteBtn.classList.add('fret-' + fret);
-
-                    if (noteBtn.classList.contains('fret-0')) {
-                        noteBtn.style.background = noteColors['selected'];
-                        noteBtn.classList.add('note-selected');
-                    }
+                    noteBtn.id = "note-" + i + "-" + fret;
 
                     noteBtn.addEventListener('click', function (event) { handlers.setNoteSelected(event); });
                     noteBtn.addEventListener('mouseover', function (event) { handlers.setNoteMouseOver(event); })
@@ -87,7 +92,6 @@
         },
         setupChordSection() {
             chordSection.innerHTML = '';
-            let noteNames = activeNotes
 
             let startFret = tools.createElement('p');
             startFret.classList.add('start-fret-chord');
@@ -157,7 +161,7 @@
                     fretNumbers[iterator - 1] = -1;
                     iterator += 1;
                 }
-                fretNumbers[iterator-1] = selectedFret;
+                fretNumbers[iterator - 1] = selectedFret;
                 iterator += 1;
 
                 if (selectedFret != 0) {
@@ -211,12 +215,64 @@
                     }
                 }
             }
+        },
+        setupInitialNotes() {
+            var fretboardString = "";
+            var fretboardFret = "";
+
+            var chordIterator = 0;
+
+            while (chordIterator < chordCompositionString.length - 1) {
+                fretboardString = parseInt((chordCompositionString[chordIterator + 1])) - 1;
+                fretboardFret = chordCompositionString.substring(chordIterator + 3, chordIterator + 5);
+
+                if (fretboardFret[0] == '0') {
+                    fretboardFret = fretboardFret[1];
+                }
+
+                console.log("(Setup Notes) chordCompositionString: " + chordCompositionString);
+                console.log("(Setup Notes) fretboardString + fretboardFret: " + fretboardString + fretboardFret);
+
+                let noteFret = document.querySelector("#note-" + fretboardString + "-" + fretboardFret);
+                noteFret.classList.add('note-selected');
+                noteFret.style.background = noteColors['selected'];
+
+                console.log("(Setup Notes) Note Id: " + noteFret.id);
+
+                fretboardString = parseInt(fretboardString) + 1;
+
+                for (const element of allNotes) {
+                    if (element.classList.contains("string-" + fretboardString) && !element.classList.contains("fret-" + fretboardFret)) {
+
+                        console.log("(Setup Notes) OTHER Note Id: " + element.id);
+
+                        element.classList.remove('note-selected');
+                        element.style.background = '#2f4d85';
+                    }
+                }
+                
+                chordIterator += 5;
+            }
+
+            this.updateChord();
         }
     }
 
     const handlers = {
         setupEventListeners() {
+            document.addEventListener("DOMContentLoaded", function () {
 
+                var chordContentString = document.querySelector('#chord-content').value;
+                console.log("(On page load) Chord Content String: " + chordContentString);
+
+                if (chordContentString.length > 2) {
+                    chordCompositionString = chordContentString;
+                }
+
+                console.log("(On page load) Chord Composition String: " + chordCompositionString);
+
+                app.setupInitialNotes();
+            });
         },
         setNoteMouseOver(event) {
             let currentElement = event.target;
@@ -242,9 +298,25 @@
             let currentFret = currentElement.classList.value.split(" ")[2];
             let stringNumber = currentString.slice(-1) - 1;
 
+            let currentStringId = 's' + currentString.split("-")[1];
+            let currentFretId = currentFret.split("-")[1];
+
+            if (currentFretId < 10) {
+                currentFretId = '0' + currentFretId;
+            }
+
+            currentFretId = 'f' + currentFretId;
+
+            chordCompositionString = chordCompositionString.replace(currentStringId + currentFretId, "");
+            chordCompositionString += currentStringId + currentFretId;
+
+            console.log("(Set Note) Current Id " + currentStringId + currentFretId);
+
             if (currentElement.classList.contains('note-selected')) {
                 currentElement.classList.remove('note-selected');
                 currentElement.style.background = '#2f4d85';
+
+                chordCompositionString = chordCompositionString.replace(currentStringId + currentFretId, "");
 
                 activeNotes[stringNumber] = 'X';
             }
@@ -256,17 +328,31 @@
 
                 for (const element of allNotes) {
                     if (element.classList.contains(currentString) && !element.classList.contains(currentFret)) {
+
+                        currentFretId = element.id.split("-")[2];
+
+                        if (currentFretId < 10) {
+                            currentFretId = '0' + currentFretId;
+                        }
+
+                        currentFretId = 'f' + currentFretId;
+
+                        chordCompositionString = chordCompositionString.replace(currentStringId + currentFretId, "");
+
                         element.classList.remove('note-selected');
                         element.style.background = '#2f4d85';
                     }
                 }
-
                 activeNotes[stringNumber] = currentElement.innerHTML;
             }
+
+            console.log("(Set Note) Chord composition " + chordCompositionString);
+
+            document.querySelector('#user-chord-input').value = chordCompositionString;
+
             app.updateChord();
         }
     }
-
 
     const tools = {
         createElement(element, content) {
@@ -277,7 +363,6 @@
             return element;
         }
     }
-
 
     app.init();
 })();

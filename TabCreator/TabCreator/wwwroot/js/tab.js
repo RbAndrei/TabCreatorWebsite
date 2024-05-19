@@ -155,9 +155,9 @@
                 console.log("(On page load) Tab Composition String: " + tabCompositionString);
 
                 if (tabCompositionString != null) {
-                    app.setupInitialNotes(); 
+                    app.setupInitialNotes();
                 }
-            })
+            });
         },
         setSelectedElement(event, otherElements) {
             let currentElement = event.target;

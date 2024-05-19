@@ -1,10 +1,157 @@
-﻿@{
+﻿@model TabCreator.Models.Chords;
+
+@{
 	ViewData["Title"] = "Fretboard Editor";
+
+	var chordContent = new string("");
+
+	if (ViewBag.ChordContent as string != null)
+	{
+		chordContent = ViewBag.ChordContent as string;
+	}
+
+	var chords = ViewBag.Chords as IEnumerable<TabCreator.Models.Chords>;
+	var chordId = 0;
 }
+
+<head>
+	<link rel="stylesheet" href="~/css/fretboard.css" />
+	<link rel="stylesheet" href="~/css/modal.css" />
+</head>
+
+<input hidden id="chord-content" value="@chordContent" />
 
 <div>
 
     @await Html.PartialAsync("_Fretboard")
 
+	<ul id="fretboard-list">
+		@{
+			if (ViewBag.UserId != null)
+			{
+				<li>
+					<a href="#" id="save-btn">
+						Save Tab
+					</a>
+				</li>
+				<li>
+					<a href="#" id="open-btn">
+						Open Tab
+					</a>
+				</li>
+			}
+			else
+			{
+				<li>
+					<a hidden href="#" id="save-btn">
+						Save Tab
+					</a>
+				</li>
+				<li>
+					<a hidden href="#" id="open-btn">
+						Open Tab
+					</a>
+				</li>
+			}
+		}
+		@{
+			if (ViewBag.ChordId != null)
+			{
+				<li>
+					<a href="#" id="delete-btn">
+						Delete Tab
+					</a>
+				</li>
+			}
+			else
+			{
+				<li>
+					<a hidden href="#" id="delete-btn">
+						Delete Tab
+					</a>
+				</li>
+			}
+		}
+	</ul>
+
+	<div id="save-modal" class="modal my-modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<form asp-action="CreateChord" method="post">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="form-group">
+					<label asp-for="ChordName" class="control-label"></label>
+					<input asp-for="ChordName" class="form-control" />
+					<span asp-validation-for="ChordName" class="text-danger"></span>
+				</div
+				<div hidden class="form-group">
+					<input hidden asp-for="UserChord" id="user-chord-input" class="form-control" />
+				</div>
+				<div class="form-group">
+					<input type="submit" value="Create" class="btn btn-primary" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="open-modal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<form asp-action="OpenChord" method="post">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div hidden class="form-group">
+					<input hidden asp-for="ChordsId" class="form-control" id="chord-id-open" />
+				</div>
+				<div class="form-group">
+					<label asp-for="ChordName" class="control-label"></label>
+					<select asp-for="ChordName" class="form-control" id="chord-name-open" />
+					@foreach (var chord in chords)
+					{
+						chordId = chord.ChordsId;
+						<option value="@chord.ChordsId" data-name="@chord.ChordName">@chord.ChordName</option>
+					}
+					<span asp-validation-for="ChordName" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<input type="submit" value="Open" class="btn btn-primary" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="delete-modal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<form asp-action="DeleteChord" method="post">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="form-group">
+					<input asp-for="ChordsId" value="@ViewBag.ChordId" class="form-control" id="chord-id-open" />
+				</div>
+				<div>
+					<p>Are you sure you want to delete this chord?</p>
+				</div>
+				<div class="form-group">
+					<input type="submit" value="Delete" class="btn btn-primary" />
+				</div>
+			</form>
+		</div>
+	</div>
+
+
 </div>
+
+<script type="text/javascript" src="~/js/modal.js"></script>
+<script type="text/javascript">
+	document.addEventListener("DOMContentLoaded", function () {
+		const chordNameSelect = document.getElementById("chord-name-open");
+		const chordIdInput = document.getElementById("chord-id-open");
+
+		chordNameSelect.addEventListener("change", function () {
+			const selectedOption = chordNameSelect.options[chordNameSelect.selectedIndex];
+			chordIdInput.value = selectedOption.value;
+		});
+
+		chordNameSelect.dispatchEvent(new Event('change'));
+	});
+</script>
 

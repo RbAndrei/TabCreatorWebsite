@@ -16,6 +16,34 @@
     padding: 0;
 }
 
+/* ------------------- General BEGIN ------------------- */
+
+#fretboard-list {
+    list-style-type: none;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+    #fretboard-list li {
+        margin: 30px;
+    }
+
+        #fretboard-list li a {
+            text-decoration: none;
+            color: black;
+            padding: 15px 30px;
+            background-color: #e5e5e5;
+        }
+
+            #fretboard-list li a:hover {
+                color: black;
+                background-color: #cfcfcf;
+            }
+
+/* -------------------  General END  ------------------- */
+
 /* ------------------- Fretboard BEGIN ------------------- */
 
 .fretboard {

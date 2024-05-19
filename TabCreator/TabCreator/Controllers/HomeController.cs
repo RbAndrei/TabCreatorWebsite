@@ -33,15 +33,10 @@ namespace TabCreator.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var tablatures = _tablatureService.GetTablaturesByUserId(userId);
+            ViewBag.UserId = userId;
 
-            /*foreach(var tab in tablatures)
-            {
-                Debug.WriteLine($"(Index) TablatureId: {tab.TablatureId}");
-				Debug.WriteLine($"(Index) TablatureName: {tab.TablatureName}");
-				Debug.WriteLine($"(Index) UserTab: {tab.UserTab}");
-			}
-*/
+			var tablatures = _tablatureService.GetTablaturesByUserId(userId);
+
             if (tablatureId != null)
             {
                 Debug.WriteLine($"(Index) TablatureId: {tablatureId}");
@@ -49,7 +44,6 @@ namespace TabCreator.Controllers
 
                 if (currentTablature != null)
                 {
-
                     ViewBag.TablatureContent = currentTablature.UserTab;
                     ViewBag.TablatureId = tablatureId;
                 }
@@ -151,10 +145,111 @@ namespace TabCreator.Controllers
             return View();
         }
 
-        public IActionResult FretboardEditor()
+        public IActionResult FretboardEditor(int? chordId)
         {
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+			ViewBag.UserId = userId;
+
+			var chords = _chordsService.GetChordsByUserId(userId);
+
+			if (chordId != null)
+			{
+				Debug.WriteLine($"(FretboardEditor) ChordId: {chordId}");
+				var currentChord = _chordsService.GetChordById((int)chordId);
+
+				if (currentChord != null)
+				{
+					ViewBag.ChordContent = currentChord.UserChord;
+					ViewBag.ChordId = chordId;
+				}
+			}
+
+			ViewBag.Chords = chords;
+
             return View();
-        }
+		}
+
+		[HttpPost]
+        public IActionResult CreateChord([Bind("ChordName,UserChord")] Chords chord)
+        {
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+			if (string.IsNullOrEmpty(userId))
+			{
+				Debug.WriteLine("(CreateChord) Error: User ID is null or empty.");
+				return RedirectToAction(nameof(FretboardEditor));
+			}
+
+			// Set the UserId to the currently logged-in user's ID
+			chord.UserId = userId;
+
+			Debug.WriteLine($"(CreateChord) ChordName: {chord.ChordName}");
+			Debug.WriteLine($"(CreateChord) UserId: {chord.UserId}");
+			Debug.WriteLine($"(CreateChord) UserChord: {chord.UserChord}");
+
+			ModelState.Clear();
+			TryValidateModel(chord);
+
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					_chordsService.CreateChord(chord);
+					Debug.WriteLine("(CreateChord) Chord created successfully.");
+				}
+				catch (DbUpdateConcurrencyException ex)
+				{
+					Debug.WriteLine($"(CreateChord) DbUpdateConcurrencyException: {ex.Message}");
+					return RedirectToAction(nameof(FretboardEditor));
+				}
+				catch (Exception ex)
+				{
+					// Log any other exception
+					Debug.WriteLine($"(CreateChord) Exception: {ex.Message}");
+					return RedirectToAction(nameof(FretboardEditor));
+				}
+				return RedirectToAction(nameof(FretboardEditor));
+			}
+			else
+			{
+				// Log ModelState errors
+				var errors = ModelState.Values.SelectMany(v => v.Errors);
+				foreach (var error in errors)
+				{
+					Debug.WriteLine($"ModelState Error: {error.ErrorMessage}");
+				}
+			}
+
+			// If we reach here, something went wrong
+			return RedirectToAction(nameof(FretboardEditor));
+		}
+
+		[HttpPost]
+		public IActionResult OpenChord([Bind("ChordsId,ChordName")] Chords chord)
+		{
+			if (chord.ChordsId == null)
+			{
+				return RedirectToAction(nameof(FretboardEditor));
+			}
+
+			Debug.WriteLine($"(OpenChord) ChordId: {chord.ChordsId}");
+			Debug.WriteLine($"(OpenChord) ChordName: {chord.ChordName}");
+
+			return RedirectToAction("FretboardEditor", new { chordId = chord.ChordsId });
+		}
+
+		[HttpPost]
+		public IActionResult DeleteChord([Bind("ChordsId")] Chords chord)
+		{
+			Debug.WriteLine($"(Delete Chord) ChordsId: {chord.ChordsId}");
+
+			chord = _chordsService.GetChordById(chord.ChordsId);
+
+			_chordsService.DeleteChord(chord);
+
+			return RedirectToAction(nameof(FretboardEditor));
+		}
 
         public IActionResult HowTo()
         {

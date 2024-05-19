@@ -12,6 +12,8 @@ namespace TabCreator.Services.Interfaces
 
 		Chords GetChordById(int id);
 
+		public List<Chords> GetChordsByUserId(string userId);
+
 		List<Chords> GetChords();
 	}
 }

@@ -82,8 +82,8 @@
 		<span class="close">&times;</span>
 		<form asp-action="DeleteTab" method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			<div hidden class="form-group">
-				<input hidden asp-for="TablatureId" class="form-control" id="tab-id-open" />
+			<div class="form-group">
+				<input asp-for="TablatureId" class="form-control" id="tab-id-open" />
 			</div>
 			<div>
 				<p>Are you sure you want to delete this tab?</p>

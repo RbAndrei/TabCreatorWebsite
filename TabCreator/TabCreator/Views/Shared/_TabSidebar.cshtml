@@ -35,16 +35,34 @@
 						Download
 					</a>
 				</li>
-				<li>
-					<a href="#" id="save-btn">
-						Save Tab
-					</a>
-				</li>
-				<li>
-					<a href="#" id="open-btn">
-						Open Tab
-					</a>
-				</li>
+				@{
+					if (ViewBag.UserId != null)
+					{
+						<li>
+							<a href="#" id="save-btn">
+								Save Tab
+							</a>
+						</li>
+						<li>
+							<a href="#" id="open-btn">
+								Open Tab
+							</a>
+						</li>
+					}
+					else
+					{
+						<li>
+							<a hidden href="#" id="save-btn">
+								Save Tab
+							</a>
+						</li>
+						<li>
+							<a hidden href="#" id="open-btn">
+								Open Tab
+							</a>
+						</li>
+					}
+				}
 				@{
 					if (ViewBag.TablatureId != null)
 					{
