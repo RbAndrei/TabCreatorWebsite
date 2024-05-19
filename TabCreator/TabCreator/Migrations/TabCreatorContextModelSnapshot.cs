@@ -232,6 +232,9 @@ namespace TabCreator.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChordsId"));
 
+                    b.Property<string>("ChordName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserChord")
                         .HasColumnType("nvarchar(max)");
 
@@ -254,6 +257,9 @@ namespace TabCreator.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SheetId"));
 
+                    b.Property<string>("SheetName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -275,6 +281,9 @@ namespace TabCreator.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TablatureId"));
+
+                    b.Property<string>("TablatureName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()

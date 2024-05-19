@@ -36,7 +36,11 @@ namespace TabCreator.Services
             return _repositoryWrapper.TablatureRepository.FindByCondition(c => c.TablatureId == id).FirstOrDefault()!;
         }
 
-        public List<Tablature> GetTablatures()
+		public List<Tablature> GetTablaturesByUserId(string userId)
+        {
+            return _repositoryWrapper.TablatureRepository.FindByCondition(c => c.UserId == userId).ToList();
+        }
+		public List<Tablature> GetTablatures()
         {
             return _repositoryWrapper.TablatureRepository.FindAll().ToList();
         }

@@ -30,12 +30,39 @@
 					<a href="#">Properties</a>
 				</li>
 				<li>
-
 					<a href="#">
 						<img src="~/images/save_icon.png" id="saveicon" width="21px" height="auto" />
 						Download
 					</a>
 				</li>
+				<li>
+					<a href="#" id="save-btn">
+						Save Tab
+					</a>
+				</li>
+				<li>
+					<a href="#" id="open-btn">
+						Open Tab
+					</a>
+				</li>
+				@{
+					if (ViewBag.TablatureId != null)
+					{
+						<li>
+							<a href="#" id="delete-btn">
+								Delete Tab
+							</a>
+						</li>
+					}
+					else
+					{
+						<li>
+							<a hidden href="#" id="delete-btn">
+								Delete Tab
+							</a>
+						</li>
+					}
+				}
 			</ul>
 		</nav>
 	</div>

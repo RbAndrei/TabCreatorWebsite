@@ -12,6 +12,8 @@ namespace TabCreator.Services.Interfaces
 
         Tablature GetTablatureById(int id);
 
+        List<Tablature> GetTablaturesByUserId(string userId);
+
         List<Tablature> GetTablatures();
     }
 }

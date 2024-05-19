@@ -163,6 +163,7 @@ namespace TabCreator.Migrations
                     ChordsId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ChordName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserChord = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -183,6 +184,7 @@ namespace TabCreator.Migrations
                     SheetId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SheetName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserSheet = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -203,6 +205,7 @@ namespace TabCreator.Migrations
                     TablatureId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TablatureName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserTab = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>

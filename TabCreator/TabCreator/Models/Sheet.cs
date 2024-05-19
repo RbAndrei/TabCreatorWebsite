@@ -14,6 +14,8 @@ namespace TabCreator.Models
         [ForeignKey("UserId")]
         public virtual IdentityUser? User { get; set; }
 
+        public string? SheetName { get; set; }
+
         public string? UserSheet { get; set; }
     }
 }

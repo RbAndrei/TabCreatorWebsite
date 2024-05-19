@@ -7,9 +7,24 @@ namespace TabCreator.Repositories
     {
         private TabCreatorContext _tabCreatorContext;
 
+        private IUserRepository? _userRepository;
         private ITablatureRepository? _tablatureRepository;
         private ISheetRepository? _sheetRepository;
         private IChordsRepository? _chordsRepository;
+
+        public IUserRepository UserRepository
+        {
+            get
+            {
+                if (_userRepository == null)
+                {
+                    _userRepository = new UserRepository(_tabCreatorContext);
+                }
+
+                return _userRepository;
+            }
+        }
+
         public ITablatureRepository TablatureRepository
         {
             get

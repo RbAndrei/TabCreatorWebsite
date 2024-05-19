@@ -69,6 +69,62 @@
                     }
                 }
             }
+        },
+        setupInitialNotes() {
+            var tabBlock = "";
+            var tabString = "";
+            var tabNoteContainer = "";
+            var tabNoteValue = "";
+
+            var blockIterator = 0;
+
+            while (blockIterator < tabCompositionString.length - 1) {
+                tabBlock = tabCompositionString.substring(blockIterator, blockIterator + 2);
+                tabString = tabCompositionString[blockIterator + 2];
+                tabNoteContainer = tabCompositionString.substring(blockIterator + 3, blockIterator + 5);
+                tabNoteValue = tabCompositionString.substring(blockIterator + 5, blockIterator + 7);
+
+                if (tabBlock[0] == '0') {
+                    tabBlock = tabBlock[1];
+                }
+                if (tabNoteContainer[0] == '0') {
+                    tabNoteContainer = tabNoteContainer[1];
+                }
+                if (tabNoteValue[0] == '0') {
+                    tabNoteValue = tabNoteValue[1];
+                }
+
+                switch (tabNoteValue) {
+                    case "sl":
+                        tabNoteValue = "/";
+                        break;
+                    case "po":
+                        tabNoteValue = "p";
+                        break;
+                    case "ho":
+                        tabNoteValue = "h";
+                        break;
+                }
+
+                console.log("(Setup notes) Block Id: " + tabBlock);
+                console.log("(Setup notes) String Id: " + tabString);
+                console.log("(Setup notes) Container Id: " + tabNoteContainer);
+                console.log("(Setup notes) Note value: " + tabNoteValue);
+
+                var noteContainerId = "note-" + tabBlock + "-" + tabString + "-" + tabNoteContainer;
+
+                var noteContainer = document.querySelector("#" + noteContainerId);
+
+                console.log("(Setup notes) Container Id: " + noteContainer.id);
+
+                let customEvent = new CustomEvent('noteSelected', {
+                    detail: { noteValue: tabNoteValue }
+                });
+
+                noteContainer.dispatchEvent(customEvent);
+
+                blockIterator += 7;
+            }
         }
     }
 
@@ -85,7 +141,23 @@
 
             for (let element of elementList) {
                 element.addEventListener('click', (event) => this.setSelectedElement(event, elementList));
-            }
+            }      
+
+            document.addEventListener("DOMContentLoaded", function () {
+
+                document.querySelectorAll('.note-container').forEach(container => {
+                    container.addEventListener('noteSelected', function (event) {
+                        handlers.setNoteSelected(event, event.detail.noteValue);
+                    })
+                })
+
+                tabCompositionString = document.querySelector('#tablature-content').value;
+                console.log("(On page load) Tab Composition String: " + tabCompositionString);
+
+                if (tabCompositionString != null) {
+                    app.setupInitialNotes(); 
+                }
+            })
         },
         setSelectedElement(event, otherElements) {
             let currentElement = event.target;
@@ -113,7 +185,7 @@
                 selectedElement = currentElement;
             }
         },
-        setNoteSelected(event) {
+        setNoteSelected(event, noteValue = -1) {
             let [parentElement, childElement] = tools.getParentChild(event.target, 'note-container', 'note-text');
 
             let fretNumber = 0;
@@ -172,30 +244,37 @@
             }
             else {
                 parentElement.classList.add('note-selected');
-                childElement.innerHTML = fretNumber;
 
-                switch (childElement.innerHTML) {
-                    case 'p':
-                        currentId += 'po';
-                        break;
-                    case 'h':
-                        currentId += 'ho';
-                        break;
-                    case '/':
-                        currentId += 'sl';
-                        break;
-                    default:
-                        if (childElement.innerHTML < 10) {
-                            currentId += '0' + childElement.innerHTML;
-                        }
-                        else currentId += childElement.innerHTML;
-                        break;
+                if (noteValue == -1) {
+                    childElement.innerHTML = fretNumber;
+
+                    switch (childElement.innerHTML) {
+                        case 'p':
+                            currentId += 'po';
+                            break;
+                        case 'h':
+                            currentId += 'ho';
+                            break;
+                        case '/':
+                            currentId += 'sl';
+                            break;
+                        default:
+                            if (childElement.innerHTML < 10) {
+                                currentId += '0' + childElement.innerHTML;
+                            }
+                            else currentId += childElement.innerHTML;
+                            break;
+                    }
+
+                    tabCompositionString += currentId;
                 }
-
-                tabCompositionString += currentId;
+                else {
+                    childElement.innerHTML = noteValue;
+                }    
             }   
 
             console.log(tabCompositionString);
+            document.querySelector('#user-tab-input').value = tabCompositionString;
         },
         setNoteMouseOver(event) {
             let [parentElement, childElement] = tools.getParentChild(event.target, 'note-container', 'note-text');

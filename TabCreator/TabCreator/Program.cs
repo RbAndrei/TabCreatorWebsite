@@ -36,6 +36,9 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddScoped<IChordsRepository, ChordsRepository>();
 builder.Services.AddScoped<IChordsService, ChordsService>();
 

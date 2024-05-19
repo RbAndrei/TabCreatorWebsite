@@ -13,6 +13,8 @@ namespace TabCreator.Models
 
         [ForeignKey("UserId")]
         public virtual IdentityUser? User { get; set; }
+        
+        public string? ChordName { get; set; }
 
         public string? UserChord { get; set; }
     }
