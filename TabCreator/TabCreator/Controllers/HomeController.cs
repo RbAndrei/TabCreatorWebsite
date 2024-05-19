@@ -95,7 +95,7 @@ namespace TabCreator.Controllers
 					Debug.WriteLine($"(CreateTab) Exception: {ex.Message}");
 					return RedirectToAction(nameof(Index));
 				}
-				return RedirectToAction(nameof(Index));
+				return RedirectToAction("Index", new { tablatureId = tablature.TablatureId });
             }
 			else
 			{
@@ -211,7 +211,7 @@ namespace TabCreator.Controllers
 					Debug.WriteLine($"(CreateChord) Exception: {ex.Message}");
 					return RedirectToAction(nameof(FretboardEditor));
 				}
-				return RedirectToAction(nameof(FretboardEditor));
+				return RedirectToAction("FretboardEditor", new { chordId = chord.ChordsId });
 			}
 			else
 			{
